@@ -1,35 +1,20 @@
 import mongoose from "mongoose";
 
-const chatSchema = mongoose.Schema({
-    chatName:{
-        type: String,
-        required: true
-    },
 
-    isGroupChat: {
-        type: Boolean,
-        default: false
-    },
-
-    users: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-    }],
-
+const chatModel = mongoose.Schema(
+  {
+    chatName: { type: String, trim: true },
+    isGroupChat: { type: Boolean, default: false },
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     latestMessage: {
-        type: mongoose.Schema.Types.ObjectId?
-        ref: "Message"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
     },
+    groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  { timestamps: true }
+);
 
-    groupAdmin: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
+ 
+export default mongoose.model("Chat", chatModel);
 
-  
-},  {
-    timestamps: true
-}
-)
-
-export default mongoose.model('chat', chatSchema);

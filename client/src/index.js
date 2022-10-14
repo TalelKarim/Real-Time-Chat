@@ -6,7 +6,9 @@ ReactDOM.render(
 
 
      <ChakraProvider>
-       <App />
+     
+          <App />
+    
      </ChakraProvider>
 
 

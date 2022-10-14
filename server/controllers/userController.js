@@ -2,7 +2,6 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import express from 'express'
 import generateToken from '../Config/generateToken.js';
-const router = express.Router();
 
 
 export const  registerUser = asyncHandler (async (req,res) => {
@@ -66,5 +65,18 @@ export const authUser = asyncHandler(async (req,res) => {
     }
 });
 
+export const allUsers = asyncHandler(async (req, res) => {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : {};
+  
+      const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+      res.send(users);
+    });
 
-export default {registerUser, authUser }
+export default {registerUser, authUser, allUsers }
